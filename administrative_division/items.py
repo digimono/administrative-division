@@ -8,8 +8,15 @@
 import scrapy
 
 
-class AdministrativeDivisionItem(scrapy.Item):
+class AdmItem(scrapy.Item):
     area = scrapy.Field()
     code = scrapy.Field()
     name = scrapy.Field()
     level = scrapy.Field()
+
+
+class AdmExportItem(scrapy.Item):
+    code = scrapy.Field()
+    name = scrapy.Field()
+    level = scrapy.Field()
+    parent_code = scrapy.Field()

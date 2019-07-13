@@ -5,12 +5,12 @@ import logging
 from scrapy.exceptions import CloseSpider
 from scrapy.spiders import Spider
 
-from administrative_division.items import AdministrativeDivisionItem
+from administrative_division.items import AdmItem
 
 logger = logging.getLogger(__name__)
 
 
-class AdmSpider(Spider):
+class ZxAdmSpider(Spider):
     name = "zx_administrative_division"
     allowed_domains = ["zxinc.org"]
     start_urls = ["http://www.zxinc.org/gb2260-latest.htm"]
@@ -27,6 +27,6 @@ class AdmSpider(Spider):
             if content == "":
                 continue
             else:
-                item = AdministrativeDivisionItem()
+                item = AdmItem()
                 item["area"] = content
                 yield item

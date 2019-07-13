@@ -64,8 +64,9 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'administrative_division.pipelines.AdministrativeDivisionPipeline': 300,
-    'administrative_division.pipelines.AssemPipeline': 1000,
+    'administrative_division.pipelines.AdmPipeline': 300,
+    'administrative_division.pipelines.AssemPipeline': 900,
+    'administrative_division.pipelines.CsvExportPipeline': 1000
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
