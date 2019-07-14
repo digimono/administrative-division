@@ -38,23 +38,24 @@ special_administrative_regions = [810000, 820000]
 # 西南（Southwest China）
 
 class AdmPipeline(object):
+    sep = "\u3000"
 
     def process_item(self, item, spider):
-        sep = "\u3000"
+        if "area" in item:
+            it = item["area"]
+            item.__delitem__("area")
 
-        it = item["area"]
+            # counter = Counter(it)
+            # item["level"] = counter[sep]
+            item["level"] = it.count(self.sep)
 
-        # counter = Counter(it)
-        # item["level"] = counter[sep]
-        item["level"] = it.count(sep)
-
-        if it.startswith("000000"):
-            item["code"] = 0
-            item["name"] = "中国"
-        else:
-            arr = it.split(sep)
-            item["code"] = int(arr[0])
-            item["name"] = arr[len(arr) - 1]
+            if it.startswith("000000"):
+                item["code"] = 0
+                item["name"] = "中国"
+            else:
+                arr = it.split(self.sep)
+                item["code"] = int(arr[0])
+                item["name"] = arr[len(arr) - 1]
 
         code = str(item["code"])
         if code != "0" and len(code) != 6:
@@ -69,7 +70,6 @@ class AdmPipeline(object):
             # item["name"] = name[0: name.index("特别行政区")]
             pass
 
-        item.__delitem__("area")
         return item
 
 
@@ -82,9 +82,9 @@ class AssemPipeline(object):
 
     def process_item(self, item, spider):
         code = item["code"]
-        self.rawDict[code] = dict(item)
+        if code not in self.rawDict:
+            self.rawDict[code] = dict(item)
         self.assem_province(code, item)
-
         return item
 
     def open_spider(self, spider):
@@ -120,6 +120,7 @@ class AssemPipeline(object):
     def assem_province(self, code, item):
         if Helper.is_prov(code):
             province = dict(item)
+            province["level"] = 1
             province["parent_code"] = 0
             province["children"] = []
 
@@ -127,7 +128,7 @@ class AssemPipeline(object):
 
     def assem_city(self):
         for code in list(self.rawDict.keys()):
-            if not Helper.is_city(code):
+            if not Helper.is_city(code) or code in self.cityDict:
                 continue
 
             prov_code = int(str(code)[0:2] + "0000")
@@ -211,15 +212,6 @@ class CsvExportPipeline(object):
         file_city_path = os.path.abspath('../dist/cities.csv')
         file_county_path = os.path.abspath('../dist/counties.csv')
 
-        if os.path.exists(file_prov_path):
-            os.remove(file_prov_path)
-
-        if os.path.exists(file_city_path):
-            os.remove(file_city_path)
-
-        if os.path.exists(file_county_path):
-            os.remove(file_county_path)
-
         file_prov = open(file_prov_path, 'w+b')
         file_city = open(file_city_path, 'w+b')
         file_county = open(file_county_path, 'w+b')
@@ -257,7 +249,6 @@ class CsvExportPipeline(object):
         export_item = AdmExportItem()
         export_item["code"] = code
         export_item["name"] = item["name"]
-        export_item["level"] = item["level"]
 
         self.export_province(code, export_item)
         self.export_city(code, export_item)
@@ -268,12 +259,17 @@ class CsvExportPipeline(object):
         if Helper.is_prov(code):
             self.provDict[code] = dict(item)
 
+            item["level"] = 1
             item["parent_code"] = 0
             self.prov_exporter.export_item(item)
 
     def export_city(self, code, item):
         if Helper.is_city(code):
+            if code in self.cityDict:
+                return
+
             prov_code = int(str(code)[0:2] + "0000")
+            item["level"] = 2
             item["parent_code"] = prov_code
 
             province = self.provDict.get(prov_code)
