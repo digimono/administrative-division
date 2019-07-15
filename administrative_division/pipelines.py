@@ -13,43 +13,11 @@ from scrapy import signals
 from scrapy.exceptions import DropItem
 from scrapy.exporters import CsvItemExporter
 
-from administrative_division.enums import ChinaRegion
+from administrative_division import consts
 from administrative_division.items import AdmExportItem
 from administrative_division.util.area_util import Area
 
 logger = logging.getLogger(__name__)
-
-exclude_names = ['市辖区', '县', '省直辖县级行政区划', '自治区直辖县级行政区划']
-# 直辖市
-municipalities = [110000, 120000, 310000, 500000]
-# 自治区
-autonomous_regions = [150000, 450000, 540000, 640000, 650000]
-# 特别行政区
-special_administrative_regions = [810000, 820000]
-
-CHINA_REGION = {
-    # 华东地区
-    310000: ChinaRegion.East, 320000: ChinaRegion.East, 330000: ChinaRegion.East,
-    340000: ChinaRegion.East, 350000: ChinaRegion.East, 360000: ChinaRegion.East,
-    370000: ChinaRegion.East,
-    # 华南地区
-    440000: ChinaRegion.South, 450000: ChinaRegion.South, 460000: ChinaRegion.South,
-    # 华中地区
-    410000: ChinaRegion.Central, 420000: ChinaRegion.Central, 430000: ChinaRegion.Central,
-    # 华北地区
-    110000: ChinaRegion.North, 120000: ChinaRegion.North, 130000: ChinaRegion.North,
-    140000: ChinaRegion.North, 150000: ChinaRegion.North,
-    # 西北地区
-    610000: ChinaRegion.Northwest, 620000: ChinaRegion.Northwest, 630000: ChinaRegion.Northwest,
-    640000: ChinaRegion.Northwest, 650000: ChinaRegion.Northwest,
-    # 西南地区
-    500000: ChinaRegion.Southwest, 510000: ChinaRegion.Southwest, 520000: ChinaRegion.Southwest,
-    530000: ChinaRegion.Southwest, 540000: ChinaRegion.Southwest,
-    # 东北地区
-    210000: ChinaRegion.Northeast, 220000: ChinaRegion.Northeast, 230000: ChinaRegion.Northeast,
-    # 台港澳地区
-    710000: ChinaRegion.HK_MAC_TW, 810000: ChinaRegion.HK_MAC_TW, 820000: ChinaRegion.HK_MAC_TW
-}
 
 
 class AdmPipeline(object):
@@ -139,8 +107,8 @@ class AssemPipeline(object):
             province['level'] = 1
             province['parent_code'] = 0
 
-            if code in CHINA_REGION:
-                kv = CHINA_REGION.get(code)
+            if code in consts.CHINA_REGION:
+                kv = consts.CHINA_REGION.get(code)
                 province['region'] = kv.value
             else:
                 province['region'] = 0
@@ -161,10 +129,10 @@ class AssemPipeline(object):
             city['parent_code'] = prov_code
             city['children'] = []
 
-            if prov_code in municipalities and city['name'] in exclude_names:
+            if prov_code in consts.MUNICIPALITIES and city['name'] in consts.EXCLUDE_NAMES:
                 city['name'] = province['name']
 
-            if not city['name'] in exclude_names:
+            if not city['name'] in consts.EXCLUDE_NAMES:
                 children = province['children']
                 if not self.check_duplicate(children, city, 'name'):
                     children.append(city)
@@ -187,8 +155,8 @@ class AssemPipeline(object):
 
             county = self.rawDict[code]
 
-            if prov_code not in municipalities:
-                if city is None or city['name'] in exclude_names:
+            if prov_code not in consts.MUNICIPALITIES:
+                if city is None or city['name'] in consts.EXCLUDE_NAMES:
                     county['level'] = 2
                     county['parent_code'] = prov_code
                     province['children'].append(county)
@@ -198,7 +166,7 @@ class AssemPipeline(object):
                     if city is not None:
                         del self.cityDict[city_code]
                 else:
-                    if county['name'] in exclude_names:
+                    if county['name'] in consts.EXCLUDE_NAMES:
                         pass
                     else:
                         county['level'] = 3
@@ -284,8 +252,8 @@ class CsvExportPipeline(object):
             item['level'] = 1
             item['parent_code'] = 0
 
-            if code in CHINA_REGION:
-                kv = CHINA_REGION.get(code)
+            if code in consts.CHINA_REGION:
+                kv = consts.CHINA_REGION.get(code)
                 item['region'] = kv.value
             else:
                 item['region'] = 0
@@ -303,14 +271,14 @@ class CsvExportPipeline(object):
             item['region'] = 0
 
             province = self.provDict.get(prov_code)
-            if prov_code in municipalities:
-                if item['name'] in exclude_names:
+            if prov_code in consts.MUNICIPALITIES:
+                if item['name'] in consts.EXCLUDE_NAMES:
                     item['name'] = province['name']
 
             p_name = str(item['parent_code']) + ':' + item['name']
             if p_name not in self.city_names:
                 self.city_names.append(p_name)
-                if not item['name'] in exclude_names:
+                if not item['name'] in consts.EXCLUDE_NAMES:
                     self.city_exporter.export_item(item)
 
             self.cityDict[code] = dict(item)
@@ -328,13 +296,13 @@ class CsvExportPipeline(object):
 
             item['region'] = 0
 
-            if prov_code not in municipalities:
-                if city is None or city['name'] in exclude_names:
+            if prov_code not in consts.MUNICIPALITIES:
+                if city is None or city['name'] in consts.EXCLUDE_NAMES:
                     item['level'] = 2
                     item['parent_code'] = prov_code
                     self.city_exporter.export_item(item)
                 else:
-                    if item['name'] in exclude_names:
+                    if item['name'] in consts.EXCLUDE_NAMES:
                         pass
                     else:
                         item['level'] = 3
