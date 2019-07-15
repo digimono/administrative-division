@@ -13,16 +13,16 @@ logger = logging.getLogger(__name__)
 
 
 class GovAdmSpider(Spider):
-    name = "gov_adm_spider"
-    allowed_domains = ["stats.gov.cn"]
+    name = 'gov_adm_spider'
+    allowed_domains = ['stats.gov.cn']
     start_urls = ['http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2018/index.html']
 
     def parse(self, response):
         links = response.css("table[class='provincetable'] tr[class='provincetr'] td a")
 
         if len(links) == 0:
-            logger.warning("Provinces data crawl failed")
-            raise CloseSpider("Provinces data crawl failed")
+            logger.warning('Provinces data crawl failed')
+            raise CloseSpider('Provinces data crawl failed')
 
         for index, link in enumerate(links):
             # name = Selector(text=link.extract()).css('a::text').extract_first()
@@ -36,9 +36,9 @@ class GovAdmSpider(Spider):
             # logger.debug('Province #%s: code %d name %s, url %s' % args)
 
             item = AdmItem()
-            item["code"] = code
-            item["name"] = name
-            item["level"] = 1
+            item['code'] = code
+            item['name'] = name
+            item['level'] = 1
             yield item
 
             Wait.wait_seconds(0.5, 1.5)
@@ -62,9 +62,9 @@ class GovAdmSpider(Spider):
                 # logger.debug('City #%s: code %d name %s, url %s' % args)
 
                 item = AdmItem()
-                item["code"] = code
-                item["name"] = name
-                item["level"] = 2
+                item['code'] = code
+                item['name'] = name
+                item['level'] = 2
                 yield item
 
                 Wait.wait_seconds(0.5, 1.5)
@@ -87,7 +87,7 @@ class GovAdmSpider(Spider):
                 # href = link1.xpath('@href').extract_first()
 
                 item = AdmItem()
-                item["code"] = code
-                item["name"] = name
-                item["level"] = 3
+                item['code'] = code
+                item['name'] = name
+                item['level'] = 3
                 yield item

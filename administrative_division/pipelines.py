@@ -19,7 +19,7 @@ from administrative_division.util.area_util import Area
 
 logger = logging.getLogger(__name__)
 
-exclude_names = ["市辖区", "县", "省直辖县级行政区划", "自治区直辖县级行政区划"]
+exclude_names = ['市辖区', '县', '省直辖县级行政区划', '自治区直辖县级行政区划']
 # 直辖市
 municipalities = [110000, 120000, 310000, 500000]
 # 自治区
@@ -53,36 +53,36 @@ CHINA_REGION = {
 
 
 class AdmPipeline(object):
-    sep = "\u3000"
+    sep = '\u3000'
 
     def process_item(self, item, spider):
-        if "area" in item:
-            it = item["area"]
-            item.__delitem__("area")
+        if 'area' in item:
+            it = item['area']
+            item.__delitem__('area')
 
             # counter = Counter(it)
-            # item["level"] = counter[sep]
-            item["level"] = it.count(self.sep)
+            # item['level'] = counter[sep]
+            item['level'] = it.count(self.sep)
 
-            if it.startswith("000000"):
-                item["code"] = 0
-                item["name"] = "中国"
+            if it.startswith('000000'):
+                item['code'] = 0
+                item['name'] = '中国'
             else:
                 arr = it.split(self.sep)
-                item["code"] = int(arr[0])
-                item["name"] = arr[len(arr) - 1]
+                item['code'] = int(arr[0])
+                item['name'] = arr[len(arr) - 1]
 
-        code = str(item["code"])
-        if code != "0" and len(code) != 6:
-            raise DropItem("Area data crawl failed")
+        code = str(item['code'])
+        if code != '0' and len(code) != 6:
+            raise DropItem('Area data crawl failed')
 
-        name = item["name"]
+        name = item['name']
 
-        if name == "澳门新城区":
-            item["name"] = "新城区"
+        if name == '澳门新城区':
+            item['name'] = '新城区'
 
-        if name.endswith("特别行政区"):
-            # item["name"] = name[0: name.index("特别行政区")]
+        if name.endswith('特别行政区'):
+            # item['name'] = name[0: name.index('特别行政区')]
             pass
 
         return item
@@ -96,7 +96,7 @@ class AssemPipeline(object):
         self.countyDict = {}
 
     def process_item(self, item, spider):
-        code = item["code"]
+        code = item['code']
         if code not in self.rawDict:
             self.rawDict[code] = dict(item)
 
@@ -136,16 +136,16 @@ class AssemPipeline(object):
     def assem_province(self, code, item):
         if Area.is_prov(code):
             province = dict(item)
-            province["level"] = 1
-            province["parent_code"] = 0
+            province['level'] = 1
+            province['parent_code'] = 0
 
             if code in CHINA_REGION:
                 kv = CHINA_REGION.get(code)
-                province["region"] = kv.value
+                province['region'] = kv.value
             else:
-                province["region"] = 0
+                province['region'] = 0
 
-            province["children"] = []
+            province['children'] = []
             self.provDict[code] = province
 
     def assem_city(self):
@@ -153,20 +153,20 @@ class AssemPipeline(object):
             if not Area.is_city(code) or code in self.cityDict:
                 continue
 
-            prov_code = int(str(code)[0:2] + "0000")
+            prov_code = int(str(code)[0:2] + '0000')
             province = self.provDict.get(prov_code)
 
             city = self.rawDict[code]
-            city["level"] = 2
-            city["parent_code"] = prov_code
-            city["children"] = []
+            city['level'] = 2
+            city['parent_code'] = prov_code
+            city['children'] = []
 
-            if prov_code in municipalities and city["name"] in exclude_names:
-                city["name"] = province["name"]
+            if prov_code in municipalities and city['name'] in exclude_names:
+                city['name'] = province['name']
 
-            if not city["name"] in exclude_names:
-                children = province["children"]
-                if not self.check_duplicate(children, city, "name"):
+            if not city['name'] in exclude_names:
+                children = province['children']
+                if not self.check_duplicate(children, city, 'name'):
                     children.append(city)
 
             self.cityDict[code] = city
@@ -176,8 +176,8 @@ class AssemPipeline(object):
             if not Area.is_county(code):
                 continue
 
-            prov_code = int(str(code)[0:2] + "0000")
-            city_code = int(str(code)[0:4] + "00")
+            prov_code = int(str(code)[0:2] + '0000')
+            city_code = int(str(code)[0:4] + '00')
 
             if prov_code == 500000 and city_code == 500200:
                 city_code = 500100
@@ -188,26 +188,26 @@ class AssemPipeline(object):
             county = self.rawDict[code]
 
             if prov_code not in municipalities:
-                if city is None or city["name"] in exclude_names:
-                    county["level"] = 2
-                    county["parent_code"] = prov_code
-                    province["children"].append(county)
+                if city is None or city['name'] in exclude_names:
+                    county['level'] = 2
+                    county['parent_code'] = prov_code
+                    province['children'].append(county)
 
                     self.cityDict[code] = county
 
                     if city is not None:
                         del self.cityDict[city_code]
                 else:
-                    if county["name"] in exclude_names:
+                    if county['name'] in exclude_names:
                         pass
                     else:
-                        county["level"] = 3
-                        county["parent_code"] = city_code
-                        city["children"].append(county)
+                        county['level'] = 3
+                        county['parent_code'] = city_code
+                        city['children'].append(county)
             else:
-                county["level"] = 3
-                county["parent_code"] = city_code
-                city["children"].append(county)
+                county['level'] = 3
+                county['parent_code'] = city_code
+                city['children'].append(county)
 
             self.countyDict[code] = county
 
@@ -267,10 +267,10 @@ class CsvExportPipeline(object):
             file.close()
 
     def process_item(self, item, spider):
-        code = item["code"]
+        code = item['code']
         export_item = AdmExportItem()
-        export_item["code"] = code
-        export_item["name"] = item["name"]
+        export_item['code'] = code
+        export_item['name'] = item['name']
 
         self.export_province(code, export_item)
         self.export_city(code, export_item)
@@ -281,14 +281,14 @@ class CsvExportPipeline(object):
         if Area.is_prov(code):
             self.provDict[code] = dict(item)
 
-            item["level"] = 1
-            item["parent_code"] = 0
+            item['level'] = 1
+            item['parent_code'] = 0
 
             if code in CHINA_REGION:
                 kv = CHINA_REGION.get(code)
-                item["region"] = kv.value
+                item['region'] = kv.value
             else:
-                item["region"] = 0
+                item['region'] = 0
 
             self.prov_exporter.export_item(item)
 
@@ -297,28 +297,28 @@ class CsvExportPipeline(object):
             if code in self.cityDict:
                 return
 
-            prov_code = int(str(code)[0:2] + "0000")
-            item["level"] = 2
-            item["parent_code"] = prov_code
-            item["region"] = 0
+            prov_code = int(str(code)[0:2] + '0000')
+            item['level'] = 2
+            item['parent_code'] = prov_code
+            item['region'] = 0
 
             province = self.provDict.get(prov_code)
             if prov_code in municipalities:
-                if item["name"] in exclude_names:
-                    item["name"] = province["name"]
+                if item['name'] in exclude_names:
+                    item['name'] = province['name']
 
-            p_name = str(item["parent_code"]) + ":" + item["name"]
+            p_name = str(item['parent_code']) + ':' + item['name']
             if p_name not in self.city_names:
                 self.city_names.append(p_name)
-                if not item["name"] in exclude_names:
+                if not item['name'] in exclude_names:
                     self.city_exporter.export_item(item)
 
             self.cityDict[code] = dict(item)
 
     def export_county(self, code, item):
         if Area.is_county(code):
-            prov_code = int(str(code)[0:2] + "0000")
-            city_code = int(str(code)[0:4] + "00")
+            prov_code = int(str(code)[0:2] + '0000')
+            city_code = int(str(code)[0:4] + '00')
 
             if prov_code == 500000 and city_code == 500200:
                 city_code = 500100
@@ -326,21 +326,21 @@ class CsvExportPipeline(object):
             # province = self.provDict.get(prov_code)
             city = self.cityDict.get(city_code)
 
-            item["region"] = 0
+            item['region'] = 0
 
             if prov_code not in municipalities:
-                if city is None or city["name"] in exclude_names:
-                    item["level"] = 2
-                    item["parent_code"] = prov_code
+                if city is None or city['name'] in exclude_names:
+                    item['level'] = 2
+                    item['parent_code'] = prov_code
                     self.city_exporter.export_item(item)
                 else:
-                    if item["name"] in exclude_names:
+                    if item['name'] in exclude_names:
                         pass
                     else:
-                        item["level"] = 3
-                        item["parent_code"] = city_code
+                        item['level'] = 3
+                        item['parent_code'] = city_code
                         self.county_exporter.export_item(item)
             else:
-                item["level"] = 3
-                item["parent_code"] = city_code
+                item['level'] = 3
+                item['parent_code'] = city_code
                 self.county_exporter.export_item(item)
