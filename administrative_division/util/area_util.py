@@ -2,6 +2,7 @@
 
 
 class Area:
+
     @staticmethod
     def is_prov(code) -> bool:
         code_str = str(code)

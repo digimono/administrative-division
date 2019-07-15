@@ -90,15 +90,12 @@ class AssemPipeline(object):
         file_county_path = os.path.abspath('../dist/counties.json')
 
         with open(file=file_prov_path, encoding='utf-8', mode='w') as json_file:
-            json_file.truncate()
             json.dump(self.provDict, json_file, ensure_ascii=False, indent=2)
 
         with open(file=file_city_path, encoding='utf-8', mode='w') as json_file:
-            json_file.truncate()
             json.dump(self.cityDict, json_file, ensure_ascii=False, indent=2)
 
         with open(file=file_county_path, encoding='utf-8', mode='w') as json_file:
-            json_file.truncate()
             json.dump(self.countyDict, json_file, ensure_ascii=False, indent=2)
 
     def assem_province(self, code, item):
