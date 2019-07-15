@@ -14,8 +14,8 @@ from scrapy.exceptions import DropItem
 from scrapy.exporters import CsvItemExporter
 
 from administrative_division.enums import ChinaRegion
-from administrative_division.helper import Helper
 from administrative_division.items import AdmExportItem
+from administrative_division.util.area_util import Area
 
 logger = logging.getLogger(__name__)
 
@@ -134,7 +134,7 @@ class AssemPipeline(object):
             json.dump(self.countyDict, json_file, ensure_ascii=False, indent=2)
 
     def assem_province(self, code, item):
-        if Helper.is_prov(code):
+        if Area.is_prov(code):
             province = dict(item)
             province["level"] = 1
             province["parent_code"] = 0
@@ -150,7 +150,7 @@ class AssemPipeline(object):
 
     def assem_city(self):
         for code in list(self.rawDict.keys()):
-            if not Helper.is_city(code) or code in self.cityDict:
+            if not Area.is_city(code) or code in self.cityDict:
                 continue
 
             prov_code = int(str(code)[0:2] + "0000")
@@ -173,7 +173,7 @@ class AssemPipeline(object):
 
     def assem_county(self):
         for code in list(self.rawDict.keys()):
-            if not Helper.is_county(code):
+            if not Area.is_county(code):
                 continue
 
             prov_code = int(str(code)[0:2] + "0000")
@@ -278,7 +278,7 @@ class CsvExportPipeline(object):
         return item
 
     def export_province(self, code, item):
-        if Helper.is_prov(code):
+        if Area.is_prov(code):
             self.provDict[code] = dict(item)
 
             item["level"] = 1
@@ -293,7 +293,7 @@ class CsvExportPipeline(object):
             self.prov_exporter.export_item(item)
 
     def export_city(self, code, item):
-        if Helper.is_city(code):
+        if Area.is_city(code):
             if code in self.cityDict:
                 return
 
@@ -316,7 +316,7 @@ class CsvExportPipeline(object):
             self.cityDict[code] = dict(item)
 
     def export_county(self, code, item):
-        if Helper.is_county(code):
+        if Area.is_county(code):
             prov_code = int(str(code)[0:2] + "0000")
             city_code = int(str(code)[0:4] + "00")
 

@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class ZxAdmSpider(Spider):
-    name = "zx_administrative_division"
+    name = "zx_adm_spider"
     allowed_domains = ["zxinc.org"]
     start_urls = ["http://www.zxinc.org/gb2260-latest.htm"]
 
