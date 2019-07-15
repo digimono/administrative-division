@@ -19,4 +19,5 @@ class AdmExportItem(scrapy.Item):
     code = scrapy.Field()
     name = scrapy.Field()
     level = scrapy.Field()
+    region = scrapy.Field()
     parent_code = scrapy.Field()
