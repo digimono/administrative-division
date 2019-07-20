@@ -6,7 +6,7 @@
 
     - [中华人民共和国民政部 - 行政区划代码](http://www.mca.gov.cn/article/sj/xzqh/2019/)
     - [中华人民共和国国家统计局 - 统计用区划代码和城乡划分代码](http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2018/index.html)
-    - [ZX网站 - 全国县级以上行政区划代码(2018年12月版)](http://www.zxinc.org/gb2260-latest.htm)
+    - [ZX网站 - 全国县级以上行政区划代码(2019年6月版)](http://www.zxinc.org/gb2260-latest.htm)
 
 - 大区
     - [中国大区](https://baike.baidu.com/item/%E5%A4%A7%E5%8C%BA/22105431)
@@ -15,7 +15,7 @@
   
 ## 数据说明
 
-项目目前默认抓取 [`ZX网站 - 全国县级以上行政区划代码(2018年12月版)`](http://www.zxinc.org/gb2260-latest.htm)，抓取省、市、区县三级数据。
+项目目前默认抓取 [`ZX网站 - 全国县级以上行政区划代码(2019年6月版)`](http://www.zxinc.org/gb2260-latest.htm)，抓取省、市、区县三级数据。
 
 ### 二级数据（地级市）
 

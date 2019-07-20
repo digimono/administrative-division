@@ -19,6 +19,8 @@ from administrative_division.util.area_util import Area
 
 logger = logging.getLogger(__name__)
 
+dist_path = os.path.join(os.getcwd(), 'dist')
+
 
 class AdmPipeline(object):
     sep = '\u3000'
@@ -81,13 +83,13 @@ class AssemPipeline(object):
         # self.cityDict = dict(sorted(self.cityDict.items(), key=operator.itemgetter(0)))
         self.cityDict = dict(sorted(self.cityDict.items(), key=lambda kv: kv[0]))
 
-        logger.info(json.dumps(self.provDict, ensure_ascii=False))
-        logger.info(json.dumps(self.cityDict, ensure_ascii=False))
-        logger.info(json.dumps(self.countyDict, ensure_ascii=False))
+        logger.debug(json.dumps(self.provDict, ensure_ascii=False))
+        logger.debug(json.dumps(self.cityDict, ensure_ascii=False))
+        logger.debug(json.dumps(self.countyDict, ensure_ascii=False))
 
-        file_prov_path = os.path.abspath('../dist/provinces.json')
-        file_city_path = os.path.abspath('../dist/cities.json')
-        file_county_path = os.path.abspath('../dist/counties.json')
+        file_prov_path = os.path.join(dist_path, 'provinces.json')
+        file_city_path = os.path.join(dist_path, 'cities.json')
+        file_county_path = os.path.join(dist_path, 'counties.json')
 
         with open(file=file_prov_path, encoding='utf-8', mode='w') as json_file:
             json.dump(self.provDict, json_file, ensure_ascii=False, indent=2)
@@ -195,9 +197,9 @@ class CsvExportPipeline(object):
         self.city_names = []
         self.files = {}
 
-        file_prov_path = os.path.abspath('../dist/provinces.csv')
-        file_city_path = os.path.abspath('../dist/cities.csv')
-        file_county_path = os.path.abspath('../dist/counties.csv')
+        file_prov_path = os.path.join(dist_path, 'provinces.csv')
+        file_city_path = os.path.join(dist_path, 'cities.csv')
+        file_county_path = os.path.join(dist_path, 'counties.csv')
 
         file_prov = open(file_prov_path, 'w+b')
         file_city = open(file_city_path, 'w+b')
