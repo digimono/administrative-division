@@ -9,6 +9,7 @@ import json
 import logging
 import os
 
+from pypinyin import pinyin, Style
 from scrapy import signals
 from scrapy.exceptions import DropItem
 from scrapy.exporters import CsvItemExporter
@@ -19,7 +20,7 @@ from administrative_division.util.area_util import Area
 
 logger = logging.getLogger(__name__)
 
-dist_path = os.path.join(os.getcwd(), 'dist')
+dist_path = os.path.join(os.getcwd(), os.path.pardir, 'dist')
 
 
 class AdmPipeline(object):
@@ -54,6 +55,9 @@ class AdmPipeline(object):
         if name.endswith('特别行政区'):
             # item['name'] = name[0: name.index('特别行政区')]
             pass
+
+        first_letter = pinyin(name, style=Style.FIRST_LETTER)
+        item['first_letter'] = first_letter[0][0]
 
         return item
 
@@ -238,6 +242,7 @@ class CsvExportPipeline(object):
         export_item = AdmExportItem()
         export_item['code'] = code
         export_item['name'] = item['name']
+        export_item['first_letter'] = item['first_letter']
 
         self.export_province(code, export_item)
         self.export_city(code, export_item)

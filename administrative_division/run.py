@@ -6,7 +6,7 @@ from scrapy import cmdline
 
 
 def main():
-    dist_path = os.path.join(os.getcwd(), 'dist')
+    dist_path = os.path.join(os.getcwd(), os.path.pardir, 'dist')
     if not os.path.exists(dist_path):
         os.makedirs(dist_path)
 

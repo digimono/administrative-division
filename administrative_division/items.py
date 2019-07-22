@@ -13,6 +13,7 @@ class AdmItem(scrapy.Item):
     code = scrapy.Field()
     name = scrapy.Field()
     level = scrapy.Field()
+    first_letter = scrapy.Field()
 
 
 class AdmExportItem(scrapy.Item):
@@ -21,3 +22,4 @@ class AdmExportItem(scrapy.Item):
     level = scrapy.Field()
     region = scrapy.Field()
     parent_code = scrapy.Field()
+    first_letter = scrapy.Field()
