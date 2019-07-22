@@ -23,6 +23,11 @@ logger = logging.getLogger(__name__)
 dist_path = os.path.join(os.getcwd(), os.path.pardir, 'dist')
 
 
+def _first_letter(name):
+    first_letter = pinyin(name, style=Style.FIRST_LETTER)
+    return first_letter[0][0].upper()
+
+
 class AdmPipeline(object):
     sep = '\u3000'
 
@@ -56,8 +61,7 @@ class AdmPipeline(object):
             # item['name'] = name[0: name.index('特别行政区')]
             pass
 
-        first_letter = pinyin(name, style=Style.FIRST_LETTER)
-        item['first_letter'] = first_letter[0][0]
+        item['first_letter'] = _first_letter(name)
 
         return item
 
@@ -133,7 +137,9 @@ class AssemPipeline(object):
             city['children'] = []
 
             if prov_code in consts.MUNICIPALITIES and city['name'] in consts.EXCLUDE_NAMES:
-                city['name'] = province['name']
+                name = province['name']
+                city['name'] = name
+                city['first_letter'] = _first_letter(name)
 
             if not city['name'] in consts.EXCLUDE_NAMES:
                 children = province['children']
@@ -277,7 +283,9 @@ class CsvExportPipeline(object):
             province = self.provDict.get(prov_code)
             if prov_code in consts.MUNICIPALITIES:
                 if item['name'] in consts.EXCLUDE_NAMES:
-                    item['name'] = province['name']
+                    name = province['name']
+                    item['name'] = name
+                    item['first_letter'] = _first_letter(name)
 
             p_name = str(item['parent_code']) + ':' + item['name']
             if p_name not in self.city_names:
