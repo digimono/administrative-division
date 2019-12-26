@@ -49,4 +49,4 @@ class ChinaRegion(Enum):
     """
     台港澳地区（香港、澳门、台湾）
     """
-    HK_MAC_TW = 8
+    HK_MO_TW = 8

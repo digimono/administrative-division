@@ -1967,6 +1967,13 @@
           },
           {
             "level": 3,
+            "code": 140703,
+            "name": "太谷区",
+            "first_letter": "T",
+            "parent_code": 140700
+          },
+          {
+            "level": 3,
             "code": 140721,
             "name": "榆社县",
             "first_letter": "Y",
@@ -1998,13 +2005,6 @@
             "code": 140725,
             "name": "寿阳县",
             "first_letter": "S",
-            "parent_code": 140700
-          },
-          {
-            "level": 3,
-            "code": 140726,
-            "name": "太谷县",
-            "first_letter": "T",
             "parent_code": 140700
           },
           {
@@ -5228,7 +5228,7 @@
           },
           {
             "level": 3,
-            "code": 230720,
+            "code": 230751,
             "name": "金林区",
             "first_letter": "J",
             "parent_code": 230700
@@ -5488,13 +5488,6 @@
           },
           {
             "level": 3,
-            "code": 231121,
-            "name": "嫩江县",
-            "first_letter": "N",
-            "parent_code": 231100
-          },
-          {
-            "level": 3,
             "code": 231123,
             "name": "逊克县",
             "first_letter": "X",
@@ -5519,6 +5512,13 @@
             "code": 231182,
             "name": "五大连池市",
             "first_letter": "W",
+            "parent_code": 231100
+          },
+          {
+            "level": 3,
+            "code": 231183,
+            "name": "嫩江市",
+            "first_letter": "N",
             "parent_code": 231100
           }
         ]
@@ -6834,6 +6834,13 @@
             "name": "乐清市",
             "first_letter": "Y",
             "parent_code": 330300
+          },
+          {
+            "level": 3,
+            "code": 330383,
+            "name": "龙港市",
+            "first_letter": "L",
+            "parent_code": 330300
           }
         ]
       },
@@ -8148,13 +8155,6 @@
           },
           {
             "level": 3,
-            "code": 341822,
-            "name": "广德县",
-            "first_letter": "G",
-            "parent_code": 341800
-          },
-          {
-            "level": 3,
             "code": 341823,
             "name": "泾县",
             "first_letter": "J",
@@ -8179,6 +8179,13 @@
             "code": 341881,
             "name": "宁国市",
             "first_letter": "N",
+            "parent_code": 341800
+          },
+          {
+            "level": 3,
+            "code": 341882,
+            "name": "广德市",
+            "first_letter": "G",
             "parent_code": 341800
           }
         ]
@@ -8909,13 +8916,6 @@
           },
           {
             "level": 3,
-            "code": 360105,
-            "name": "湾里区",
-            "first_letter": "W",
-            "parent_code": 360100
-          },
-          {
-            "level": 3,
             "code": 360111,
             "name": "青山湖区",
             "first_letter": "Q",
@@ -8926,6 +8926,13 @@
             "code": 360112,
             "name": "新建区",
             "first_letter": "X",
+            "parent_code": 360100
+          },
+          {
+            "level": 3,
+            "code": 360113,
+            "name": "红谷滩区",
+            "first_letter": "H",
             "parent_code": 360100
           },
           {
@@ -9608,9 +9615,9 @@
           },
           {
             "level": 3,
-            "code": 361121,
-            "name": "上饶县",
-            "first_letter": "S",
+            "code": 361104,
+            "name": "广信区",
+            "first_letter": "G",
             "parent_code": 361100
           },
           {
@@ -11347,13 +11354,6 @@
           },
           {
             "level": 3,
-            "code": 410728,
-            "name": "长垣县",
-            "first_letter": "Z",
-            "parent_code": 410700
-          },
-          {
-            "level": 3,
             "code": 410781,
             "name": "卫辉市",
             "first_letter": "W",
@@ -11364,6 +11364,13 @@
             "code": 410782,
             "name": "辉县市",
             "first_letter": "H",
+            "parent_code": 410700
+          },
+          {
+            "level": 3,
+            "code": 410783,
+            "name": "长垣市",
+            "first_letter": "Z",
             "parent_code": 410700
           }
         ]
@@ -13229,13 +13236,6 @@
           },
           {
             "level": 3,
-            "code": 430521,
-            "name": "邵东县",
-            "first_letter": "S",
-            "parent_code": 430500
-          },
-          {
-            "level": 3,
             "code": 430522,
             "name": "新邵县",
             "first_letter": "X",
@@ -13288,6 +13288,13 @@
             "code": 430581,
             "name": "武冈市",
             "first_letter": "W",
+            "parent_code": 430500
+          },
+          {
+            "level": 3,
+            "code": 430582,
+            "name": "邵东市",
+            "first_letter": "S",
             "parent_code": 430500
           }
         ]
@@ -15553,8 +15560,8 @@
           },
           {
             "level": 3,
-            "code": 451021,
-            "name": "田阳县",
+            "code": 451003,
+            "name": "田阳区",
             "first_letter": "T",
             "parent_code": 451000
           },
@@ -16882,16 +16889,16 @@
           },
           {
             "level": 3,
-            "code": 510922,
-            "name": "射洪县",
-            "first_letter": "S",
+            "code": 510923,
+            "name": "大英县",
+            "first_letter": "D",
             "parent_code": 510900
           },
           {
             "level": 3,
-            "code": 510923,
-            "name": "大英县",
-            "first_letter": "D",
+            "code": 510981,
+            "name": "射洪市",
+            "first_letter": "S",
             "parent_code": 510900
           }
         ]
@@ -20664,13 +20671,6 @@
           },
           {
             "level": 3,
-            "code": 610623,
-            "name": "子长县",
-            "first_letter": "Z",
-            "parent_code": 610600
-          },
-          {
-            "level": 3,
             "code": 610625,
             "name": "志丹县",
             "first_letter": "Z",
@@ -20723,6 +20723,13 @@
             "code": 610632,
             "name": "黄陵县",
             "first_letter": "H",
+            "parent_code": 610600
+          },
+          {
+            "level": 3,
+            "code": 610681,
+            "name": "子长市",
+            "first_letter": "Z",
             "parent_code": 610600
           }
         ]
@@ -21827,16 +21834,16 @@
           },
           {
             "level": 3,
-            "code": 630121,
-            "name": "大通回族土族自治县",
-            "first_letter": "D",
+            "code": 630106,
+            "name": "湟中区",
+            "first_letter": "H",
             "parent_code": 630100
           },
           {
             "level": 3,
-            "code": 630122,
-            "name": "湟中县",
-            "first_letter": "H",
+            "code": 630121,
+            "name": "大通回族土族自治县",
+            "first_letter": "D",
             "parent_code": 630100
           },
           {
@@ -23260,7 +23267,7 @@
       {
         "level": 2,
         "code": 659010,
-        "name": "胡杨河市(待批)",
+        "name": "胡杨河市",
         "first_letter": "H",
         "parent_code": 650000
       }

@@ -53,5 +53,5 @@ CHINA_REGION = {
     # 东北地区
     210000: ChinaRegion.Northeast, 220000: ChinaRegion.Northeast, 230000: ChinaRegion.Northeast,
     # 台港澳地区
-    710000: ChinaRegion.HK_MAC_TW, 810000: ChinaRegion.HK_MAC_TW, 820000: ChinaRegion.HK_MAC_TW,
+    710000: ChinaRegion.HK_MO_TW, 810000: ChinaRegion.HK_MO_TW, 820000: ChinaRegion.HK_MO_TW,
 }
